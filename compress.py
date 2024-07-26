@@ -1,7 +1,7 @@
 import chess
 import chess.pgn
 from priorityQueue import Pq
-import bitarray
+from bitarray import bitarray
 
 
 class Compress():
@@ -11,16 +11,16 @@ class Compress():
 class no_arvore():
     def __init__(self, _letra):
         self.letra = _letra
-        self.binario = None
+        self.binario = bitarray()
         self.pai = None
         self.esquerda = None
         self.direita = None
     
     def volta_raiz(self):
         no = self.pai
-        retorno = [self.binario]
+        retorno = bitarray() + self.binario
         while no != None:
-            retorno.append(no.binario)
+            retorno += no.binario
             no = no.pai
         return retorno
 
@@ -38,24 +38,24 @@ def cria_arvore(lista):
         n1 = fila_nos.get()
         n2 = fila_nos.get()
         print(f"peson1: {n1[0]}, {n1[1].letra}; peson2:{n2[0]}, {n2[1].letra}")
-        if n1[1].letra != " ":
-            pai = no_arvore(" ")
+        if n1[1].letra != "":
+            pai = no_arvore("")
             pai.pai = None
             pai.esquerda = n1[1]
             pai.direita = n2[1]
             pai.esquerda.pai = pai
-            pai.esquerda.binario = 1
-            pai.direita.binario = bin(0)
+            pai.esquerda.binario = bitarray([True])
+            pai.direita.binario = bitarray([False])
             pai.direita.pai = pai
             fila_nos.add((n1[0]+n2[0], pai))
         else:
-            pai = no_arvore(" ")
+            pai = no_arvore("")
             pai.esquerda = n2[1]
             pai.direita = n1[1]
             pai.esquerda.pai = pai
             pai.direita.pai = pai
-            pai.esquerda.binario = "1"
-            pai.direita.binario = "0"
+            pai.esquerda.binario = bitarray([True])
+            pai.direita.binario = bitarray([False])
             fila_nos.add((n1[0]+n2[0], pai))
     
     return dicionario_letras, fila_nos.get()[1]
@@ -72,6 +72,7 @@ def printa_arvore(no, direcao, profundidade):
 
 if __name__ == "__main__":
     frequencia_alfabeto = [(14.63, "a"),
+    (10, " "),
     (12.57, "e"),
     (10.73, "o"),
     (7.81, "s"),
@@ -100,10 +101,21 @@ if __name__ == "__main__":
 
     dic, arvore = cria_arvore(frequencia_alfabeto)
 
-    print("".join(reversed(dic["y"].volta_raiz())))
-
-    a = "".join(reversed(dic["y"].volta_raiz()))
+    a = dic["b"].volta_raiz()
+    a.reverse()
+    print(a)
+    texto = "ola mundo galera tudo bem"
+    quant =0
+    total = bitarray()
+    with open("teste.bin", "wb") as fp:
+        for letra in texto:
+            codificado = dic[letra].volta_raiz()
+            codificado.reverse()
+            total += codificado
+            quant += len(codificado)
+        fp.write(total)
     
+    print(quant)
 
 
     """
