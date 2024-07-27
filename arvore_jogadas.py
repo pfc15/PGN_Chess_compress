@@ -2,27 +2,11 @@ from bitarray import *
 from compress import *
 def frequencia_jogos():
     texto = ""
-    with open("minhas_partidas.pgn", 'r') as fp:
+    with open("Vienna.pgn", 'r') as fp:
         linha = fp.readline()
         
         while linha !="":
-            print(linha)
-            if linha[:2] == "1.":
-                texto += linha
-            elif '"' in linha:
-                print("-="*25)
-                print(f"linha do ANTES negocio: {linha}")
-                print("-="*25)
-                i = linha.index('"')+1
-                linha = linha[i:linha[i+1:].index('"')+i+1]
-                print("-="*25)
-                print(f"linha do negocio: {linha}")
-                print("-="*25)
-                print('oi')
-                texto += linha+'\n'
-            else:
-                texto += linha
-            
+            texto += linha
             linha = fp.readline()
 
     dic = {}
@@ -102,30 +86,6 @@ frequencia_alfabeto = [(14.63, "a"),
 
 print(tupla)
 dic_jogo, arvore_jogo = cria_arvore(tupla)
-texto = ""
-with open("Vienna.pgn", 'r') as fp:
-        linha = fp.readline()
-        
-        while linha !="":
-            print(linha)
-            if linha[:2] == "1.":
-                texto += linha
-            elif '"' in linha:
-                print("-="*25)
-                print(f"linha do ANTES negocio: {linha}")
-                print("-="*25)
-                i = linha.index('"')+1
-                linha = linha[i:linha[i+1:].index('"')+i+1]
-                print("-="*25)
-                print(f"linha do negocio: {linha}")
-                print("-="*25)
-                print('oi')
-                texto += linha+'\n'
-            
-            linha = fp.readline()
-            while linha == '\n':
-                linha = fp.readline()
-
 print(texto)
 
 quant =0

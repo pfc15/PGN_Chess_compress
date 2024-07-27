@@ -3,18 +3,10 @@ import bitarray
 from compress import *
 def frequencia_jogos():
     texto = ""
-    with open("minhas_partidas.pgn", 'r') as fp:
+    with open("Vienna.pgn", 'r') as fp:
         linha = fp.readline()
         while linha !="":
-            print(linha)
-            if linha[:2] == "1.":
-                texto += linha
-            elif '"' in linha:
-                i = linha.index('"')+1
-                linha = linha[i:linha[i+1:].index('"')+i+1]
-                texto += linha+'\n'
-            else:
-                texto+=linha
+            texto+=linha
             linha = fp.readline()
             
 
@@ -57,43 +49,25 @@ cabecalho = ['[Event "', '"]',
 '[EndDate "', '"]',
 '[EndTime "', '"]',
 '[Link "', '"]"', "\n", "\n"]
+texto = ""
 
 with open("teste.bin", "rb") as fp:
     a= bitarray()
     bitarray.fromfile(a,fp)
     no = arvore
-    print()
-    index_cabecalho = 1
-    contagem_jogada = 0
-    print(cabecalho[0], end="")
     for b in a:
         if b:
             no = no.esquerda
             if no.esquerda==None and no.direita ==None:
-                    
-                
-                if no.letra == '\n':
-                    print(cabecalho[index_cabecalho], end="")
-                    index_cabecalho = (index_cabecalho+1)%len(cabecalho)
-                    print("")
-                    print(cabecalho[index_cabecalho], end="")
-                    index_cabecalho = (index_cabecalho+1)%len(cabecalho)
-                    
-                else:
-                    print(f'{no.letra}', end="")
+                texto += no.letra
                 no = arvore
                 
         else:
             
             no = no.direita
             if no.esquerda==None and no.direita ==None:
-                
-                if no.letra == '\n':
-                    print(cabecalho[index_cabecalho], end="")
-                    index_cabecalho = (index_cabecalho+1)%len(index_cabecalho)
-                    print(cabecalho[index_cabecalho], end="")
-                    index_cabecalho = (index_cabecalho+1)%len(cabecalho)
-                else:
-                    print(f'{no.letra}', end="")
+                texto += no.letra
                 no = arvore
-    print()
+
+with open("reconstrucao.pgn", 'w') as fp:
+    fp.write(texto)
