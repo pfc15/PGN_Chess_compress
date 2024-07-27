@@ -9,6 +9,7 @@ from compress import *
 import chess.pgn
 import chess.svg
 from chessboard import display
+from time import sleep
 
 
 # create the root window
@@ -63,23 +64,25 @@ def agir():
                 while jogo != None:
                     lista_jogos.append(jogo)
                     jogo = chess.pgn.read_game(fp)
-                    
-                    print('oi')
                 
-            chess.svg.board(lista_jogos[0].board(), size=350)
+            ver_jogo(lista_jogos[0])
     print(acao_var.get())
 
 def ver_jogo(jogo):
     game_board = display.start()
     board = jogo.board()
     display.update(board.fen(), game_board)
-    while True:
-        for move in jogo.mainline_moves():
-            board.push(move)
-            display.update(board.fen(), game_board)
-            sleep(1)
-            display.check_for_quit()
-        
+
+    for move in jogo.mainline_moves():
+        print(move)
+        board.push(move)
+        display.update(board.fen(), game_board)
+        sleep(0.5)
+        display.check_for_quit()
+    
+    print(jogo.headers["Termination"])
+    display.terminate()
+
 
 ultimo = 0
 label_acao = tk.Label(text="ação: ")
