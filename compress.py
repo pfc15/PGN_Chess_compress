@@ -34,10 +34,8 @@ def cria_arvore(lista):
         dicionario_letras[l[1]] = novo_no
     
     while fila_nos.tamanho>1:
-        
         n1 = fila_nos.get()
         n2 = fila_nos.get()
-        print(f"peson1: {n1[0]}, {n1[1].letra}; peson2:{n2[0]}, {n2[1].letra}")
         if n1[1].letra != "":
             pai = no_arvore("")
             pai.pai = None

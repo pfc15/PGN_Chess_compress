@@ -11,9 +11,7 @@ class Pq():
 
     def heap_up(self):
         index = self.tamanho
-        print(f'index: {index}; tamanho: {self.tamanho}; real_tamanho: {len(self.lista)}')
         while self.lista[index//2][0] > self.lista[index][0]:
-            print(f'index: {index}; tamanho: {self.tamanho}; real_tamanho: {len(self.lista)}')
             aux = self.lista[index]
             self.lista[index] = self.lista[index//2]
             self.lista[index//2] = aux

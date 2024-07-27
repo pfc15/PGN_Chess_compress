@@ -1,51 +1,99 @@
 import chess.pgn
 import bitarray
 from compress import *
+def frequencia_jogos():
+    texto = ""
+    with open("minhas_partidas.pgn", 'r') as fp:
+        linha = fp.readline()
+        while linha !="":
+            print(linha)
+            if linha[:2] == "1.":
+                texto += linha
+            elif '"' in linha:
+                i = linha.index('"')+1
+                linha = linha[i:linha[i+1:].index('"')+i+1]
+                texto += linha+'\n'
+            else:
+                texto+=linha
+            linha = fp.readline()
+            
 
-frequencia_alfabeto = [(14.63, "a"),
-    (10, " "),
-    (12.57, "e"),
-    (10.73, "o"),
-    (7.81, "s"),
-    (6.53, "r"),
-    (6.18, "i"),
-    (5.05, "n"),
-    (4.99, "d"),
-    (4.74, "m"),
-    (4.63, "u"),
-    (4.34, "t"),
-    (3.88, "c"),
-    (2.78, "l"),
-    (2.52, "p"),
-    (1.67, "v"),
-    (1.30, "g"),
-    (1.28, "h"),
-    (1.20, "q"),
-    (1.04, "b"),
-    (1.02, "f"),
-    (0.47, "z"),
-    (0.40, "j"),
-    (0.21, "x"),
-    (0.02, "k"),
-    (0.01, "w"),
-    (0.01, "y")]
 
-dic, arvore = cria_arvore(frequencia_alfabeto)
+    dic = {}
+    for letra in texto:
+        if letra in dic.keys():
+            dic[letra] +=1
+        else:
+            dic[letra] = 1
+    print(dic.keys())
+    tupla = []
+    for k, v in dic.items():
+        tupla.append((v, k))
+    return texto, tupla
+
+
+texto, tupla = frequencia_jogos()
+
+
+dic, arvore = cria_arvore(tupla)
+cabecalho = ['[Event "', '"]',
+'[Site "', '"]',
+'[Date "', '"]',
+'[Round "', '"]',
+'[White "', '"]',
+'[Black "', '"]',
+'[Result "', '"]',
+'[CurrentPosition "', '"]',
+'[Timezone "', '"]',
+'[ECO "', '"]',
+'[ECOUrl "', '"]',
+'[UTCDate "', '"]',
+'[UTCTime "', '"]',
+'[WhiteElo "', '"]',
+'[BlackElo "', '"]',
+'[TimeControl "', '"]',
+'[Termination "', '"]',
+'[StartTime "', '"]',
+'[EndDate "', '"]',
+'[EndTime "', '"]',
+'[Link "', '"]"', "\n", "\n"]
 
 with open("teste.bin", "rb") as fp:
     a= bitarray()
     bitarray.fromfile(a,fp)
     no = arvore
-    print(len(a))
+    print()
+    index_cabecalho = 1
+    contagem_jogada = 0
+    print(cabecalho[0], end="")
     for b in a:
         if b:
             no = no.esquerda
             if no.esquerda==None and no.direita ==None:
-                print(f'{no.letra}', end="")
+                    
+                
+                if no.letra == '\n':
+                    print(cabecalho[index_cabecalho], end="")
+                    index_cabecalho = (index_cabecalho+1)%len(cabecalho)
+                    print("")
+                    print(cabecalho[index_cabecalho], end="")
+                    index_cabecalho = (index_cabecalho+1)%len(cabecalho)
+                    
+                else:
+                    print(f'{no.letra}', end="")
                 no = arvore
+                
         else:
+            
             no = no.direita
             if no.esquerda==None and no.direita ==None:
-                print(f'{no.letra}', end="")
+                
+                if no.letra == '\n':
+                    print(cabecalho[index_cabecalho], end="")
+                    index_cabecalho = (index_cabecalho+1)%len(index_cabecalho)
+                    print(cabecalho[index_cabecalho], end="")
+                    index_cabecalho = (index_cabecalho+1)%len(cabecalho)
+                else:
+                    print(f'{no.letra}', end="")
                 no = arvore
     print()
