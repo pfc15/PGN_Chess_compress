@@ -10,33 +10,75 @@ import chess.pgn
 import chess.svg
 from chessboard import display
 from time import sleep
+import chess_com
 
 
 # create the root window
 root = tk.Tk()
 root.title('zip de pgn')
 
+def openNewWindow():
+     
+    # Toplevel object which will 
+    # be treated as a new window
+    global newWindow, root
+    newWindow = tk.Toplevel(root)
+ 
+    # sets the title of the
+    # Toplevel widget
+    newWindow.title("importar jogos chess.com")
+ 
+    # A Label widget to show in toplevel
+    tk.Label(newWindow, 
+          text ="digite seu usuario do chess.com").pack()
+    global usuario_var 
+    usuario_var = tk.StringVar()
+    usuario_var.set("")
+    
+    tk.Entry(newWindow, textvariable=usuario_var, width=60).pack()
+    ttk.Button(
+        newWindow,
+        text='file_explorer',
+        command=acao_import
+    ).pack()
+
+def acao_import():
+    global usuario_var, newWindow
+    
+    resposta = chess_com.import_games(usuario_var.get())
+    if resposta:
+        newWindow.destroy()
+    else:
+        tk.Label(newWindow, "usuario não identificado").pack()
+
+
 
 def select_file():
     global path_var, acao_var
-    if acao_var.get() == "compress" or acao_var.get() == "vizualização":
-        filetypes = (
-            ('pgn files', '*.pgn'),
-            ('text files', '*.txt'),
-            ('All files', '*.*')
+    if acao_var.get() == "importar jogos chess.com":
+        name = fd.askdirectory(
+            title='Select a folder',
+            initialdir=pathlib.Path().resolve()
         )
     else:
-        filetypes = (
-            ('pgnin files', '*.pgnin'),
-            ('text files', '*.txt'),
-            ('All files', '*.*')
+        if acao_var.get() == "compress" or acao_var.get() == "vizualização":
+            filetypes = (
+                ('pgn files', '*.pgn'),
+                ('text files', '*.txt'),
+                ('All files', '*.*')
+            )
+        else:
+            filetypes = (
+                ('pgnin files', '*.pgnin'),
+                ('text files', '*.txt'),
+                ('All files', '*.*')
         )
 
-    filename = fd.askopenfilename(
-        title='Open a file',
-        initialdir=pathlib.Path().resolve(),
-        filetypes=filetypes)
-    path_var.set(filename)
+        name = fd.askopenfilename(
+            title='Open a file',
+            initialdir=pathlib.Path().resolve(),
+            filetypes=filetypes)
+    path_var.set(name)
 
 def agir():
     global acao_var, path_var
@@ -66,7 +108,8 @@ def agir():
                     jogo = chess.pgn.read_game(fp)
                 
             ver_jogo(lista_jogos[0])
-    print(acao_var.get())
+    elif acao_var.get() == "importar jogos chess.com":
+        openNewWindow()
 
 def ver_jogo(jogo):
     game_board = display.start()
@@ -88,9 +131,9 @@ ultimo = 0
 label_acao = tk.Label(text="ação: ")
 label_acao.grid(row=1, column=1)
 ultimo+=1
-acoes = ["compress", "decompress", "vizualização"]
+acoes = [ "importar jogos chess.com","compress", "decompress", "vizualização"]
 acao_var = tk.StringVar()
-acao_var.set("compress")
+acao_var.set("importar jogos chess.com")
 acao = tk.OptionMenu(root, acao_var, *acoes)
 acao.grid(row=1, column=2)
 ultimo+=1
