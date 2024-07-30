@@ -64,7 +64,7 @@ def openimport():
     tk.Entry(newWindow, textvariable=usuario_var, width=60).pack()
     ttk.Button(
         newWindow,
-        text='file_explorer',
+        text='importar!',
         command=acao_import
     ).pack()
 
