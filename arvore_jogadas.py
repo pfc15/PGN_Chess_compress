@@ -5,7 +5,7 @@ import time
 
 def frequencia_jogos():
     texto = ""
-    with open("Vienna.pgn", 'r') as fp:
+    with open("jogos_pfc15.pgn", 'r') as fp:
         linha = fp.readline()
         
         while linha !="":
@@ -27,10 +27,10 @@ def frequencia_jogos():
 
 
 texto, tupla = frequencia_jogos()
+print(tupla)
+dic_jogo, arvore_jogo = cria_arvore(tupla)
 
-dic_jogo, arvore_jogo = cria_arvore()
 
-print("--- %s seconds ---" % (time.time() - start_time))
 quant =0
 total = bitarray()
 with open("teste.bin", "wb") as fp:
@@ -41,5 +41,3 @@ with open("teste.bin", "wb") as fp:
         total += codificado
         quant += len(codificado)
     fp.write(total)
-
-print("--- %s seconds ---" % (time.time() - start_time))

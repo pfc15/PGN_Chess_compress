@@ -17,7 +17,33 @@ import chess_com
 root = tk.Tk()
 root.title('zip de pgn')
 
-def openNewWindow():
+def openvisualizacao():
+    global lista_jogos
+    global visualizacao, root
+    visualizacao = tk.Toplevel(root)
+
+    visualizacao.title("visualização de jogos")
+    jogos_nomes = []
+    cont = 0
+    for j in lista_jogos:
+        cont+=1
+        jogos_nomes.append(f'{cont}. {j.headers["Date"]}')
+    global jogos_var 
+    jogos_var = tk.StringVar()
+    jogos_var.set(jogos_nomes[0])
+    jogos = tk.OptionMenu(visualizacao, jogos_var, *jogos_nomes).pack()
+
+    ttk.Button(
+        visualizacao,
+        text='ver jogo',
+        command=escolhe_jogo
+    ).pack()
+    global resultado
+    resultado = tk.Label(visualizacao, text="")
+    resultado.pack()
+
+
+def openimport():
      
     # Toplevel object which will 
     # be treated as a new window
@@ -61,7 +87,7 @@ def select_file():
             initialdir=pathlib.Path().resolve()
         )
     else:
-        if acao_var.get() == "compress" or acao_var.get() == "vizualização":
+        if acao_var.get() == "compress" or acao_var.get() == "visualização":
             filetypes = (
                 ('pgn files', '*.pgn'),
                 ('text files', '*.txt'),
@@ -96,7 +122,8 @@ def agir():
             print("foi")
         else:
             print("tipo errado de arquivo!")
-    elif acao_var.get() == "vizualização":
+    elif acao_var.get() == "visualização":
+        global lista_jogos
         print('oi')
         if path_var.get()[-4:] == ".pgn":
             lista_jogos = []
@@ -106,10 +133,15 @@ def agir():
                 while jogo != None:
                     lista_jogos.append(jogo)
                     jogo = chess.pgn.read_game(fp)
-                
-            ver_jogo(lista_jogos[0])
+            openvisualizacao()
     elif acao_var.get() == "importar jogos chess.com":
-        openNewWindow()
+        openimport()
+
+
+def escolhe_jogo():
+    global jogos_var, lista_jogos, resultado
+    index = int(jogos_var.get()[:jogos_var.get().index('.')])
+    resultado.configure(text=ver_jogo(lista_jogos[index]))
 
 def ver_jogo(jogo):
     game_board = display.start()
@@ -123,15 +155,16 @@ def ver_jogo(jogo):
         sleep(0.5)
         display.check_for_quit()
     
-    print(jogo.headers["Termination"])
+    
     display.terminate()
+    return jogo.headers["Termination"]
 
 
 ultimo = 0
 label_acao = tk.Label(text="ação: ")
 label_acao.grid(row=1, column=1)
 ultimo+=1
-acoes = [ "importar jogos chess.com","compress", "decompress", "vizualização"]
+acoes = [ "importar jogos chess.com","compress", "decompress", "visualização"]
 acao_var = tk.StringVar()
 acao_var.set("importar jogos chess.com")
 acao = tk.OptionMenu(root, acao_var, *acoes)
