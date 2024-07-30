@@ -57,4 +57,4 @@ rodar o arquivo gui.py pelo terminal com python e então navegar pela interface 
 
 ## Apresentação 
 
-A apresentação da entrega pode ser visualizada [aqui](https://www.youtube.com/watch?v=DzwIaUZssiU). 
+A apresentação da entrega pode ser visualizada [aqui](https://drive.google.com/drive/folders/1bBlNaUzzJk3iKIqAYEPznmC1tg40I5oY?usp=drive_link). 
