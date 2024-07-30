@@ -5,6 +5,10 @@ from compress import *
 
 
 def ler_arquivo(path, output="reconstrucao.pgn"):
+    """
+    função para descomprimir e ler arquivos comprimidos em .pgnin
+    :return: não retorna nenhum valor mas cria um arquivo de pgn com o mesmo nome do arquivo comprimido 
+    """
     dic, arvore = cria_arvore()
     texto = ""
 

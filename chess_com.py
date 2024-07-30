@@ -1,7 +1,14 @@
 from chessdotcom import client, Client
 from datetime import datetime
 
+
+
 def import_games(userName):
+   """
+   função para importar jogos do site chess.com
+
+   :param userName: nome de usuário em string
+   """
    try:
       Client.request_config["headers"]["User-Agent"] = (
          "My Python Application."

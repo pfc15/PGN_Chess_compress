@@ -5,6 +5,9 @@ from bitarray import bitarray
 
 
 class no_arvore():
+    """
+    classe que funciona mais como uma struct dos valores que o nó da arvore precisa
+    """
     def __init__(self, _letra):
         self.letra = _letra
         self.binario = bitarray()
@@ -99,6 +102,12 @@ frequencia = [(36.27654381254577, '['),
     (0.0061020258725897, 'J')]
 
 def cria_arvore(lista=frequencia):
+    """
+    função para criar a arvore de comprensão
+    :param lista: lista de frequencias de cada folha/signo sendo uma tupla = (frequencia, 'signo') 
+    :return retorna um dicionario apontando para as folhas e a raiz da árvore
+    """
+
     fila_nos = Pq()
     dicionario_letras = {}
     for l in lista:
@@ -140,6 +149,11 @@ def printa_arvore(no, direcao, profundidade):
         printa_arvore(no.direita, "direita", profundidade)
 
 def compress(path):
+    """
+    função para comprimir um arquivo pgn
+    :param path: caminho para o arquivo pgn a ser comprimido
+    """
+
     texto = ""
     dic_jogo, arvore = cria_arvore()
     with open(path, 'r') as fp:
@@ -152,7 +166,6 @@ def compress(path):
     total = bitarray()
     novo_path = path[:-4] + ".pgnin"
     with open(f"{novo_path}", "wb") as fp:
-        
         for letra in texto:
             codificado = dic_jogo[letra].volta_raiz()
             codificado.reverse()

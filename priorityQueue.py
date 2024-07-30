@@ -1,4 +1,7 @@
 class Pq():
+    """
+    implementação de uma fila de prioridade, priorizando valores mínimos
+    """
     def __init__(self):
         self.lista = [""]
         self.tamanho = 0
