@@ -32,7 +32,7 @@ Foi desenvolvido um compressor de arquivor .pgn. O tipo .pgn é um tipo de arqui
 git clone https://github.com/pfc15/PGN_Chess_compress
 ```
 
-### 2. Compile o programa
+### 2. instale os requisitos
 
 
 rodar no terminal:
@@ -41,7 +41,7 @@ rodar no terminal:
 pip install -r requisitos.txt
 ```
 
-### 2. Compile o programa
+### 3. rode o programa
 para linux:
 ```bash
 python3 gui.py
